@@ -2,8 +2,11 @@ import { useRouter } from 'pages/routing';
 import { Button, FixedBottomCTA, List, ListRow, Spacing } from '_tosslib/components';
 import { Top03 } from '_tosslib/components/Top';
 import { colors } from '_tosslib/constants/colors';
+import { useRecoilState } from 'recoil';
+import { addressData } from 'store';
 
 export function ConfirmationPage() {
+  const [addressState] = useRecoilState(addressData);
   const router = useRouter();
 
   return (
@@ -42,13 +45,13 @@ export function ConfirmationPage() {
           }
           right={
             <ListRow.Text2Rows
-              top="토스시 송금동 토스아파트"
+              top={`${addressState.main} ${addressState.gu} ${addressState.dong}`}
               topProps={{
                 color: colors.grey700,
                 typography: 't5',
                 fontWeight: 'bold',
               }}
-              bottom="1001동"
+              bottom=""
               bottomProps={{
                 color: colors.grey700,
                 typography: 't5',

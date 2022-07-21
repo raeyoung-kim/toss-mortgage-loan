@@ -20,6 +20,9 @@ export type RoutePath =
   | '/start'
   | '/property-type'
   | '/region-based-address'
+  | '/region-based-address/main'
+  | '/region-based-address/gu'
+  | '/region-based-address/dong'
   | '/confirmation'
   | '/waiting'
   | '/inquiry-complete';
