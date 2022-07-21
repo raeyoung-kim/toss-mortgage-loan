@@ -1,9 +1,36 @@
+import { useEffect, useState } from 'react';
 import { FixedBottomCTA, Icon, List, ListRow, Lottie, Spacing } from '_tosslib/components';
 import { Top03 } from '_tosslib/components/Top';
 import { colors } from '_tosslib/constants/colors';
 import { marginX24 } from '_tosslib/utils/spacing';
+import { getLoanInquiryResult, getMe } from './remotes';
 
 export function InquiryCompletePage() {
+  const [data, setData] = useState({
+    name: '',
+    interestRate1000: 0,
+    loanLimitAmount: 0,
+  });
+  const load = async () => {
+    const id = sessionStorage.getItem('transactionId');
+    try {
+      if (id) {
+        const { name } = await getMe();
+        const res = await getLoanInquiryResult(id);
+        setData({
+          name,
+          ...res,
+        });
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  useEffect(() => {
+    load();
+  }, []);
+
   return (
     <>
       <Lottie
@@ -20,9 +47,9 @@ export function InquiryCompletePage() {
         <ListRow
           contents={
             <ListRow.Text2Rows
-              top="임지훈님의 맞춤 금리"
+              top={`${data.name}의 맞춤 금리`}
               topProps={{ color: colors.grey900, typography: 't7' }}
-              bottom={formatRate1000(162)}
+              bottom={formatRate1000(data.interestRate1000)}
               bottomProps={{ color: colors.blue500, typography: 't2', fontWeight: 'semibold' }}
             />
           }
@@ -32,7 +59,7 @@ export function InquiryCompletePage() {
             <ListRow.Text2Rows
               top="한도"
               topProps={{ color: colors.grey900, typography: 't7' }}
-              bottom="20억 3,000만원"
+              bottom={data.loanLimitAmount.toLocaleString()}
               bottomProps={{ color: colors.blue500, typography: 't2', fontWeight: 'semibold' }}
             />
           }
