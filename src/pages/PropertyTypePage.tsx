@@ -10,7 +10,7 @@ export function PropertyTypePage() {
   const [value, setValue] = useState<'주택/빌라' | '아파트'>('아파트');
 
   useEffect(() => {
-    sessionStorage.setItem('transactionId', value);
+    sessionStorage.setItem('option', value);
   }, [value]);
 
   return (
